@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Data Table</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 50px;
+      }
+      input,
+      button {
+        padding: 8px;
+        margin-bottom: 15px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #009688;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Data Table with Search & Sort</h2>
+
+    <input type="text" id="searchBox" placeholder="Search by name or city..." />
+    <br />
+    <button id="sortNameBtn">Sort by Name</button>
+    <button id="sortAgeBtn">Sort by Age</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>City</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Data will be inserted here by JS -->
+      </tbody>
+    </table>
+
+    <script>
+      // Array of objects
+      const data = [
+        { name: "Ahmed", age: 25, city: "Cairo" },
+        { name: "Mona", age: 22, city: "Alexandria" },
+        { name: "Omar", age: 30, city: "Giza" },
+        { name: "Salma", age: 27, city: "Mansoura" },
+        { name: "Khaled", age: 24, city: "Aswan" },
+      ];
+
+      const tableBody = document.getElementById("tableBody");
+      const searchBox = document.getElementById("searchBox");
+      const sortNameBtn = document.getElementById("sortNameBtn");
+      const sortAgeBtn = document.getElementById("sortAgeBtn");
+
+      // Function to display table
+      function displayTable(arr) {
+        tableBody.innerHTML = "";
+        arr.forEach((item) => {
+          let row = `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.age}</td>
+                    <td>${item.city}</td>
+                </tr>`;
+          tableBody.innerHTML += row;
+        });
+      }
+
+      // Initial display of the table
+      displayTable(data);
+
+      // Search functionality (filters while typing without clicking a button)
+      searchBox.addEventListener("input", function () {
+        let query = searchBox.value.toLowerCase();
+        let filteredData = data.filter(
+          (item) =>
+            item.name.toLowerCase().includes(query) ||
+            item.city.toLowerCase().includes(query),
+        );
+        displayTable(filteredData);
+      });
+
+      // Sort by Name
+      sortNameBtn.addEventListener("click", function () {
+        let sortedData = [...data].sort((a, b) => a.name.localeCompare(b.name));
+        displayTable(sortedData);
+      });
+
+      // Sort by Age
+      sortAgeBtn.addEventListener("click", function () {
+        let sortedData = [...data].sort((a, b) => a.age - b.age);
+        displayTable(sortedData);
+      });
+    </script>
+  </body>
+</html>
